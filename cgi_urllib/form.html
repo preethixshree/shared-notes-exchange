@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shared Notes Exchange Portal</title>
+    <style>
+        :root {
+            --navy: #102b57;
+            --blue: #1d5fa7;
+            --gold: #f2b233;
+            --ink: #172033;
+            --muted: #657085;
+            --line: #d8e0eb;
+            --panel: #ffffff;
+            --page: #eef3f8;
+            --error: #b42318;
+            --error-bg: #fff1f0;
+            --focus: rgba(29, 95, 167, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            color: var(--ink);
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--page);
+        }
+
+        .topbar {
+            background: var(--navy);
+            color: #ffffff;
+        }
+
+        .masthead {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            width: min(1120px, calc(100% - 32px));
+            min-height: 92px;
+            margin: 0 auto;
+            padding: 16px 0;
+        }
+
+        .seal {
+            display: grid;
+            flex: 0 0 58px;
+            width: 58px;
+            height: 58px;
+            place-items: center;
+            border: 3px solid var(--gold);
+            border-radius: 50%;
+            color: var(--gold);
+            font-size: 19px;
+            font-weight: 800;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .university {
+            min-width: 0;
+        }
+
+        .university h1 {
+            margin: 0;
+            font-size: 25px;
+            line-height: 1.15;
+            letter-spacing: 0;
+        }
+
+        .university p {
+            margin: 5px 0 0;
+            color: #dce8f6;
+            font-size: 14px;
+        }
+
+        .navline {
+            border-top: 1px solid rgba(255, 255, 255, 0.18);
+            background: #153866;
+        }
+
+        .navline-inner {
+            display: flex;
+            gap: 24px;
+            width: min(1120px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 10px 0;
+            color: #eef5ff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        main {
+            width: min(1120px, calc(100% - 32px));
+            margin: 28px auto 36px;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 430px;
+            gap: 24px;
+            align-items: stretch;
+        }
+
+        .intro {
+            min-height: 440px;
+            padding: 34px;
+            border-radius: 8px;
+            color: #ffffff;
+            background:
+                linear-gradient(rgba(16, 43, 87, 0.88), rgba(16, 43, 87, 0.92)),
+                linear-gradient(135deg, #1d5fa7, #102b57);
+            box-shadow: 0 18px 44px rgba(16, 43, 87, 0.18);
+        }
+
+        .intro .tag {
+            display: inline-flex;
+            margin: 0 0 20px;
+            padding: 7px 11px;
+            border-left: 4px solid var(--gold);
+            color: #ffe2a6;
+            font-size: 13px;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .intro h2 {
+            max-width: 640px;
+            margin: 0;
+            font-size: 38px;
+            line-height: 1.12;
+            letter-spacing: 0;
+        }
+
+        .intro p {
+            max-width: 640px;
+            margin: 16px 0 0;
+            color: #dce8f6;
+            font-size: 16px;
+            line-height: 1.65;
+        }
+
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .quick-links div {
+            min-height: 84px;
+            padding: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        .quick-links strong {
+            display: block;
+            color: #ffffff;
+            font-size: 15px;
+        }
+
+        .quick-links span {
+            display: block;
+            margin-top: 6px;
+            color: #dce8f6;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .portal {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--panel);
+            box-shadow: 0 18px 44px rgba(23, 32, 51, 0.12);
+            overflow: hidden;
+        }
+
+        .portal-head {
+            padding: 20px 22px;
+            border-bottom: 4px solid var(--gold);
+            background: #ffffff;
+        }
+
+        .portal-head h2 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 24px;
+            line-height: 1.2;
+        }
+
+        .portal-head p {
+            margin: 7px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .tab {
+            min-height: 46px;
+            border: 0;
+            color: var(--navy);
+            font: inherit;
+            font-weight: 700;
+            background: #f7f9fc;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            color: #ffffff;
+            background: var(--blue);
+        }
+
+        form {
+            padding: 22px;
+        }
+
+        .field {
+            margin-top: 15px;
+        }
+
+        .field:first-child {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--ink);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        input,
+        select {
+            display: block;
+            width: 100%;
+            height: 43px;
+            padding: 9px 11px;
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            color: var(--ink);
+            font: inherit;
+            background: #fbfcfe;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px var(--focus);
+        }
+
+        .register-only {
+            display: none;
+        }
+
+        body.register-mode .register-only {
+            display: block;
+        }
+
+        body.login-mode .login-note {
+            display: block;
+        }
+
+        .login-note {
+            display: none;
+            margin: 13px 0 0;
+            padding: 10px 12px;
+            border-left: 4px solid var(--gold);
+            color: #5b4211;
+            font-size: 13px;
+            line-height: 1.45;
+            background: #fff7e5;
+        }
+
+        .error {
+            display: none;
+            margin-top: 15px;
+            padding: 10px 12px;
+            border: 1px solid #ffd0cb;
+            border-radius: 5px;
+            color: var(--error);
+            font-size: 14px;
+            background: var(--error-bg);
+        }
+
+        .error:not(:empty) {
+            display: block;
+        }
+
+        .submit {
+            width: 100%;
+            min-height: 45px;
+            margin-top: 18px;
+            border: 0;
+            border-radius: 5px;
+            color: #ffffff;
+            font: inherit;
+            font-weight: 800;
+            background: var(--navy);
+            cursor: pointer;
+        }
+
+        .submit:hover {
+            background: #0c2144;
+        }
+
+        .portal-foot {
+            padding: 13px 22px 18px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .intro {
+                min-height: auto;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .masthead {
+                align-items: flex-start;
+            }
+
+            .university h1 {
+                font-size: 20px;
+            }
+
+            .navline-inner {
+                gap: 14px;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .intro {
+                padding: 24px 18px;
+            }
+
+            .intro h2 {
+                font-size: 28px;
+            }
+
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="login-mode">
+    <header class="topbar">
+        <div class="masthead">
+            <div class="seal" aria-hidden="true">PTU</div>
+            <div class="university">
+                <h1>Puducherry Technological University</h1>
+                <p>Shared Notes Exchange Portal</p>
+            </div>
+        </div>
+        <div class="navline">
+            <div class="navline-inner">
+                <span>Admissions</span>
+                <span>Academics</span>
+                <span>Departments</span>
+                <span>Student Services</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" aria-label="Shared notes authentication">
+            <div class="intro">
+                <p class="tag">Client-Server Scripting with CGI and urllib</p>
+                <h2>Role-based access for faculty, students, and admin monitoring.</h2>
+                <p>
+                    Students and faculty authenticate through the CGI module before using the notes exchange workflow. Faculty can move ahead to upload notes, students can download resources, and admin can supervise synchronization.
+                </p>
+                <div class="quick-links" aria-label="Module summary">
+                    <div>
+                        <strong>Faculty</strong>
+                        <span>Register or login to upload notes for a subject.</span>
+                    </div>
+                    <div>
+                        <strong>Student</strong>
+                        <span>Register or login to access available study notes.</span>
+                    </div>
+                    <div>
+                        <strong>Admin</strong>
+                        <span>Login directly to monitor dashboard and synchronization.</span>
+                    </div>
+                </div>
+            </div>
+
+            <section class="portal" aria-labelledby="portalTitle">
+                <div class="portal-head">
+                    <h2 id="portalTitle">User Portal</h2>
+                    <p id="portalSubtitle">Login with your assigned role.</p>
+                </div>
+
+                <div class="tabs" role="tablist" aria-label="Authentication mode">
+                    <button class="tab active" type="button" id="loginTab">Login</button>
+                    <button class="tab" type="button" id="registerTab">Register</button>
+                </div>
+
+                <form id="authForm" action="/cgi-bin/process_user.cgi" method="post" novalidate>
+                    <input id="mode" name="mode" type="hidden" value="login">
+
+                    <div class="field register-only">
+                        <label for="name">Full Name</label>
+                        <input id="name" name="name" type="text" autocomplete="name" placeholder="Enter your full name">
+                    </div>
+
+                    <div class="field">
+                        <label for="role">Role</label>
+                        <select id="role" name="role">
+                            <option value="student">Student</option>
+                            <option value="faculty">Faculty</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="email">Email / Admin ID</label>
+                        <input id="email" name="email" type="text" autocomplete="username" placeholder="name@example.com">
+                    </div>
+
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter password">
+                    </div>
+
+                    <div class="field register-only">
+                        <label for="department">Department</label>
+                        <input id="department" name="department" type="text" placeholder="Example: CSE">
+                    </div>
+
+                    <div class="field register-only">
+                        <label for="semester">Semester</label>
+                        <select id="semester" name="semester">
+                            <option value="">Select semester</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                            <option value="5">Semester 5</option>
+                            <option value="6">Semester 6</option>
+                            <option value="7">Semester 7</option>
+                            <option value="8">Semester 8</option>
+                        </select>
+                    </div>
+
+                    
+                    <div id="errorBox" class="error" aria-live="polite"></div>
+                    <button id="submitButton" class="submit" type="submit">Login</button>
+                </form>
+
+                <div class="portal-foot">
+                    This Part B portal demonstrates HTML validation, CGI server-side validation, and urllib POST communication.
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script>
+        const body = document.body;
+        const form = document.getElementById("authForm");
+        const modeInput = document.getElementById("mode");
+        const loginTab = document.getElementById("loginTab");
+        const registerTab = document.getElementById("registerTab");
+        const role = document.getElementById("role");
+        const nameInput = document.getElementById("name");
+        const email = document.getElementById("email");
+        const password = document.getElementById("password");
+        const department = document.getElementById("department");
+        const semester = document.getElementById("semester");
+        const errorBox = document.getElementById("errorBox");
+        const submitButton = document.getElementById("submitButton");
+        const portalSubtitle = document.getElementById("portalSubtitle");
+        const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+        function setMode(mode) {
+            const registerMode = mode === "register";
+            modeInput.value = mode;
+            body.className = registerMode ? "register-mode" : "login-mode";
+            loginTab.classList.toggle("active", !registerMode);
+            registerTab.classList.toggle("active", registerMode);
+            submitButton.textContent = registerMode ? "Create Account" : "Login";
+            portalSubtitle.textContent = registerMode
+                ? "Student and faculty registration only."
+                : "Login with your assigned role.";
+            errorBox.innerHTML = "";
+
+            if (registerMode && role.value === "admin") {
+                role.value = "student";
+            }
+
+            role.querySelector("option[value='admin']").disabled = registerMode;
+        }
+
+        function validateForm(event) {
+            const mode = modeInput.value;
+            const selectedRole = role.value;
+            const errors = [];
+
+            if (mode === "register" && !nameInput.value.trim()) {
+                errors.push("Name is required.");
+            }
+
+            if (!selectedRole) {
+                errors.push("Role is required.");
+            }
+
+            if (!email.value.trim()) {
+                errors.push("Email or admin ID is required.");
+            } else if (selectedRole !== "admin" && !emailPattern.test(email.value.trim())) {
+                errors.push("Invalid email format.");
+            }
+
+            if (!password.value.trim()) {
+                errors.push("Password is required.");
+            } else if (mode === "register" && password.value.trim().length < 4) {
+                errors.push("Password must contain at least 4 characters.");
+            }
+
+            if (mode === "register" && selectedRole === "admin") {
+                errors.push("Admin registration is not allowed.");
+            }
+
+            if (mode === "register" && !department.value.trim()) {
+                errors.push("Department is required.");
+            }
+
+            if (mode === "register" && selectedRole === "student" && !semester.value) {
+                errors.push("Semester is required for students.");
+            }
+
+            if (errors.length > 0) {
+                event.preventDefault();
+                errorBox.innerHTML = errors.join("<br>");
+            }
+        }
+
+        loginTab.addEventListener("click", () => setMode("login"));
+        registerTab.addEventListener("click", () => setMode("register"));
+        form.addEventListener("submit", validateForm);
+        setMode("login");
+    </script>
+</body>
+</html>

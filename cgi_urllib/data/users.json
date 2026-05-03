@@ -1,0 +1,34 @@
+[
+  {
+    "name": "SONALI N",
+    "email": "sonalinadarajan@gmail.com",
+    "password": "sona@123",
+    "role": "student",
+    "department": "CSE",
+    "semester": "6"
+  },
+  {
+    "name": "preethishree",
+    "email": "preethi@gmail.com",
+    "password": "preethi123",
+    "role": "student",
+    "department": "CSE",
+    "semester": "3"
+  },
+  {
+    "name": "Dr.Sarulatha",
+    "email": "drsarulathaptuniv1@gmail.com",
+    "password": "1234",
+    "role": "faculty",
+    "department": "CSE",
+    "semester": ""
+  },
+  {
+    "name": "Pria",
+    "email": "pria@gmail.com",
+    "password": "1234",
+    "role": "student",
+    "department": "CSE",
+    "semester": "6"
+  }
+]
